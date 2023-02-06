@@ -29,8 +29,11 @@ while(True):
 	flag = message_with_flag[-1:]
 	if flag:
 		if message != PASSCODE:
-			connection_socket.send("0".encode())
+			connection_socket.send("Incorrect passcode".encode())
 			connection_socket.close()
+		else:
+			connection_socket.send("Correct passcode".encode())
+			
 
 	
 
