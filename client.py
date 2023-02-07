@@ -27,6 +27,7 @@ if connection_status == "Incorrect passcode":
 else:
 	connected = 1
 	print("Connected to " + server_ip + " on port " + server_port)
+	client_socket.send((username+"2").encode())
 	
 
 
