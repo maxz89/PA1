@@ -6,6 +6,7 @@ from socket import *
 
 #TODO: Implement all code for your server here
 # python server.py -start -port 80 -passcode hi
+# python3 server.py -start -port 1200 -passcode hi
 # parsing command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-start', action='store_true')
@@ -24,22 +25,25 @@ sys.stdout.flush()
 sockets = []
 
 def receive(socket):
-	username = ''
+	temp_username = ''
 	while(True):
 		message_with_flag = connection_socket.recv(1024).decode()
 		message = message_with_flag[:-1]
 		flag = message_with_flag[-1:]
+		sys.stdout.flush()
 		if flag == "2":
-			username = message
-			print(username + " joined the chatroom")
+			temp_username = message
+			print(temp_username + " joined the chatroom")
 			sys.stdout.flush()
 			# print to all other clients
 			for curr_connection_socket in sockets:
 				if curr_connection_socket != socket:
-					curr_connection_socket.send((username + " joined the chatroom").encode())
+					curr_connection_socket.send((temp_username + " joined the chatroom").encode())
 		else:
 			for curr_connection_socket in sockets:
-				curr_connection_socket.send((username + ": " + message_with_flag).encode())
+				print(message_with_flag)
+				sys.stdout.flush()
+				curr_connection_socket.send(message_with_flag.encode())
 
 # running server
 while(True):

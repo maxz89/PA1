@@ -7,6 +7,7 @@ from socket import *
 
 #TODO: Implement a client that connects to your server to chat with other clients here
 # python client.py -join -host 127.0.0.1 -port 80 -username andrew -passcode hi
+# python3 client.py -join -host 127.0.0.1 -port 1200 -username andrew -passcode hi
 # parsing command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-join', action='store_true')
@@ -18,11 +19,13 @@ args = parser.parse_args()
 join, server_ip, server_port, username, PASSCODE = args.join, args.host, args.port, args.username, args.passcode
 
 def receive(socket):
-	print(socket.recv(1024).decode())
-	sys.stdout.flush()
+	while(True):
+		print(socket.recv(1024).decode())
+		sys.stdout.flush()
 	
-def chat(socket):
-	socket.send(input().encode())
+def chat(socket, username):
+	while(True):
+		socket.send((username + ": " + input()).encode())
 
 # intializing client socket and establishing connection
 client_socket = socket(AF_INET, SOCK_STREAM)
@@ -36,7 +39,7 @@ else:
 	print("Connected to " + server_ip + " on port " + server_port)
 	client_socket.send((username+"2").encode())
 	rthread = threading.Thread(target=receive, args=(client_socket,))
-	cthread = threading.Thread(target=chat, args=(client_socket,))
+	cthread = threading.Thread(target=chat, args=(client_socket, username,))
 	rthread.start()
 	cthread.start()
 
