@@ -6,7 +6,7 @@ from socket import *
 
 
 #TODO: Implement a client that connects to your server to chat with other clients here
-
+# python client.py -join -host 127.0.0.1 -port 80 -username andrew -passcode hi
 # parsing command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-join', action='store_true')

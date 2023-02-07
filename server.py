@@ -5,7 +5,7 @@ import argparse
 from socket import *
 
 #TODO: Implement all code for your server here
-
+# python server.py -start -port 80 -passcode hi
 # parsing command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-start', action='store_true')
