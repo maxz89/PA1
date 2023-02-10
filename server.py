@@ -27,7 +27,7 @@ sockets = []
 def receive(socket):
 	temp_username = ''
 	while(True):
-		message_with_flag = connection_socket.recv(1024).decode()
+		message_with_flag = socket.recv(1024).decode()
 		message = message_with_flag[:-1]
 		flag = message_with_flag[-1:]
 		sys.stdout.flush()
@@ -38,12 +38,22 @@ def receive(socket):
 			# print to all other clients
 			for curr_connection_socket in sockets:
 				if curr_connection_socket != socket:
-					curr_connection_socket.send((temp_username + " joined the chatroom").encode())
-		else:
+					curr_connection_socket.send((temp_username + " joined the chatroom0").encode())
+		elif flag == "3":
+			print(message + " left the chatroom")
+			sys.stdout.flush()
+			sockets.remove(socket)
 			for curr_connection_socket in sockets:
-				print(message_with_flag)
-				sys.stdout.flush()
-				curr_connection_socket.send(message_with_flag.encode())
+				if curr_connection_socket != socket:
+					curr_connection_socket.send((message + " left the chatroom0").encode())
+			socket.send("1".encode())
+			socket.close()
+			return
+		else:
+			print(message)
+			sys.stdout.flush()
+			for curr_connection_socket in sockets:
+				curr_connection_socket.send((message+"0").encode())
 
 # running server
 while(True):
